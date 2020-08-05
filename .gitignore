@@ -3,3 +3,5 @@ static/
 qlapse/__pycache__/
 /__pycache__/
 accounts/__pycache__/
+payments/__pycache__/
+stripe_payments/__pycache__/

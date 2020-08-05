@@ -15,4 +15,4 @@ class CustomUserCreate(CreateView):
     model = CustomUser
     template_name = 'accounts/registration.html'
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('payments:add_payment_method')
