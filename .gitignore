@@ -5,3 +5,5 @@ qlapse/__pycache__/
 accounts/__pycache__/
 payments/__pycache__/
 stripe_payments/__pycache__/
+banners/__pycache__/
+banners/migrations/__pycache__/

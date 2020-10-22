@@ -24,4 +24,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('stripe_payments/', include('stripe_payments.urls')),
     path('payments/', include('payments.urls')),
+    path('banners/', include('banners.urls')),
 ]
