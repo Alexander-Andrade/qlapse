@@ -1,0 +1,146 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Charset:
+      - utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Basic QUMwOTEyZGU5ZDRkZjI1NDIxOWZiNDk1NGNjNjJjMWRhYzo1OGEyNGUxZmFkMGZhZWNkYTc2NDhjYTFlMjkzOGJiZg==
+      Connection:
+      - keep-alive
+      User-Agent:
+      - twilio-python/6.46.0 (Python 3.8.0)
+      X-Twilio-Client:
+      - python-6.46.0
+    method: GET
+    uri: https://api.twilio.com/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/AvailablePhoneNumbers/US/Local.json?PageSize=1
+  response:
+    body:
+      string: '{"available_phone_numbers": [{"friendly_name": "(334) 367-5405", "phone_number":
+        "+13343675405", "lata": "478", "rate_center": "LOUISVILLE", "latitude": "31.800600",
+        "longitude": "-85.573000", "locality": "Louisville", "region": "AL", "postal_code":
+        "36048", "iso_country": "US", "address_requirements": "none", "beta": false,
+        "capabilities": {"voice": true, "SMS": true, "MMS": true, "fax": true}}],
+        "uri": "/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/AvailablePhoneNumbers/US/Local.json?PageSize=1"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match,
+        If-Unmodified-Since
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '513'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 04 Nov 2020 16:45:03 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      Twilio-Concurrent-Requests:
+      - '1'
+      Twilio-Request-Duration:
+      - '0.535'
+      Twilio-Request-Id:
+      - RQ796a25228c534945889805aa2b33b59f
+      X-API-Domain:
+      - api.twilio.com
+      X-Home-Region:
+      - us1
+      X-Powered-By:
+      - AT-5000
+      X-Shenanigans:
+      - none
+    status:
+      code: 200
+      message: OK
+- request:
+    body: PhoneNumber=%2B13343675405
+    headers:
+      Accept:
+      - application/json
+      Accept-Charset:
+      - utf-8
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Basic QUMwOTEyZGU5ZDRkZjI1NDIxOWZiNDk1NGNjNjJjMWRhYzo1OGEyNGUxZmFkMGZhZWNkYTc2NDhjYTFlMjkzOGJiZg==
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '26'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - twilio-python/6.46.0 (Python 3.8.0)
+      X-Twilio-Client:
+      - python-6.46.0
+    method: POST
+    uri: https://api.twilio.com/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/IncomingPhoneNumbers.json
+  response:
+    body:
+      string: '{"sid": "PN2752e765b54faf2efe48099f060357b6", "account_sid": "AC0912de9d4df254219fb4954cc62c1dac",
+        "friendly_name": "(334) 367-5405", "phone_number": "+13343675405", "voice_url":
+        "https://demo.twilio.com/welcome/voice/", "voice_method": "POST", "voice_fallback_url":
+        null, "voice_fallback_method": "POST", "voice_caller_id_lookup": false, "date_created":
+        "Wed, 04 Nov 2020 16:45:04 +0000", "date_updated": "Wed, 04 Nov 2020 16:45:04
+        +0000", "sms_url": "https://demo.twilio.com/welcome/sms/reply/", "sms_method":
+        "POST", "sms_fallback_url": "", "sms_fallback_method": "POST", "address_requirements":
+        "none", "beta": false, "capabilities": {"voice": true, "sms": true, "mms":
+        true, "fax": true}, "voice_receive_mode": "voice", "status_callback": "",
+        "status_callback_method": "POST", "api_version": "2010-04-01", "voice_application_sid":
+        null, "sms_application_sid": "", "origin": "twilio", "trunk_sid": null, "emergency_status":
+        "Inactive", "emergency_address_sid": null, "address_sid": null, "identity_sid":
+        null, "bundle_sid": null, "uri": "/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/IncomingPhoneNumbers/PN2752e765b54faf2efe48099f060357b6.json",
+        "status": "in-use"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match,
+        If-Unmodified-Since
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1180'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 04 Nov 2020 16:45:04 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      Twilio-Concurrent-Requests:
+      - '1'
+      Twilio-Request-Duration:
+      - '0.866'
+      Twilio-Request-Id:
+      - RQ3cea1163de9040faaa7c4db43a0e9273
+      X-API-Domain:
+      - api.twilio.com
+      X-Home-Region:
+      - us1
+      X-Powered-By:
+      - AT-5000
+      X-Shenanigans:
+      - none
+    status:
+      code: 201
+      message: CREATED
+version: 1

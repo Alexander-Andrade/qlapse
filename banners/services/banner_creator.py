@@ -2,9 +2,10 @@ from banners.models import Banner
 from django.core.files.base import ContentFile
 from .pdf_banner_generator import PdfBannerGenerator
 from .buy_twilio_number import BuyTwilioNumber
+from .base_service import BaseService
 
 
-class BannerCreator:
+class BannerCreator(BaseService):
 
     def __init__(self, user):
         self.user = user
@@ -12,7 +13,7 @@ class BannerCreator:
     def create(self):
         buy_number_result = BuyTwilioNumber().buy()
 
-        if 'error' in buy_number_result:
+        if self.error_result(buy_number_result):
             return buy_number_result
 
         banner_upload = PdfBannerGenerator(phone_number=buy_number_result['success']).generate()
@@ -21,4 +22,4 @@ class BannerCreator:
                         user=self.user)
 
         banner.save()
-        return {'success': banner}
+        return self.success(banner)

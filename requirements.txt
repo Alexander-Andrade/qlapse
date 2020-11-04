@@ -14,3 +14,9 @@ sqlparse==0.3.1
 stripe==2.48.0
 urllib3==1.25.9
 whitenoise==5.1.0
+reportlab==3.5.53
+svglib==1.0.1
+stripe==2.48.0
+twilio==6.46.0
+vcrpy==4.1.1
+

@@ -5,7 +5,6 @@ from svglib.svglib import svg2rlg
 from reportlab.graphics.barcode import qr
 import io
 from django.contrib.staticfiles.storage import staticfiles_storage
-import pdb
 
 
 class PdfBannerGenerator:
