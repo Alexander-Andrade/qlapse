@@ -22,3 +22,12 @@ def create(request):
             return redirect('banners:index')
         else:
             return render(request, 'banners/index.html', {'error': result['error']})
+
+
+@login_required
+def banner_detail(request, id):
+    banner = Banner.objects.get(pk=id)
+    if request.user.is_authenticated():
+        return universal_error(request, context={"code": 403})
+    
+    return render(request, "banners/banner.html")

@@ -1,11 +1,9 @@
 {% extends "shared/base.html" %}
+{% block title %} Banners {% endblock %}
 {% load static %}
 
+
 {% block body %}
-<form action="{% url 'banners:create' %}"  method="post" >
-  {% csrf_token %}
 
 
-  <input type="submit" class="btn btn-primary btn-block" value="Create">
-</form>
 {% endblock %}

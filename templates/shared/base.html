@@ -17,9 +17,83 @@
   </head>
 
   <body>
+
+    <div class="container">
+      <div class="card-deck">
+
+      {% if request.customuser.is_authenticated %}
+
+      {% block navbar %}
+
+      <div class="col-4">
+        <div class="card">
+            <div class="card-header">Local Shop</div>
+            <div class="card-body">
+
+              <nav class="navbar navbar-light fixed-left bg-light flex-md-nowrap"> 
+                <a class="navbar-brand fixed-top" href="#">Qlapse</a> 
+                <ul class="nav navbar-nav"> 
+                  <li class="nav-item active">
+                    <a href="" class="nav-link">Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">Client manager</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">Calendar</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">Messages</a>
+                    <span class="badge badge-primary badge-pill">2</span>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">Payments</a>
+                  </li> 
+                </ul> 
+              </nav> 
+
+              <div class="card-footer">
+                <small class="text-muted"><a href='/accounts/login'>Logout</a></small>
+              </div>
+
+        </div>
+        </div>
+        </div>
+
+      {% endblock %}
+
+      {% block content %}
+        <div class="col-8">
+              <div class="card">
+                <div class="card-header">
+                  Banners
+                  <form action="{% url 'banners:create' %}"  method="post">{% csrf_token %}
+                    <input type="submit" class="btn btn-link" value="Add new">
+                  </form>
+                </div>
+
+                {% for banner in banners %}
+
+                  <div class="card-body">
+                      <p class="card-text"><a href='/banners/{{ banner.id }}/'>{{ banner }}</a></p>
+                  </div>
+                  {% endfor %}
+
+                </div>
+              </div>
+        </div>
+
+      {% endblock %}
+      {% endif %}
+      
+      </div>
+    </div>
+
     <div class="container">
       {% block body %}
+      <h1>ghbdtn</h1>
       {% endblock %}
     </div>
+
   </body>
 </html>
