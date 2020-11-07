@@ -1,0 +1,21 @@
+<div class="card rounded-15-px" style="width: 15rem">
+  <div class="card-body">
+    <p class="font-weight-bold mb-0">Local Shop LLC</p>
+  </div>
+  <hr class="ml-3 mr-3 mb-0 mt-0">
+  <div class="card-body">
+    <ul class="nav flex-column">
+      <li class="nav-item sidebar-item rounded-15-px">
+        <a class="nav-link active text-dark" href="{% url 'accounts:index' %}">Dashboard</a>
+      </li>
+      <li class="nav-item sidebar-item rounded-15-px">
+        <a class="nav-link active text-dark" href="{% url 'banners:index' %}">Banners</a>
+      </li>
+    </ul>
+  </div>
+  <hr class="ml-3 mr-3 mb-0 mt-0">
+  <div class="card-body">
+    <a class="nav-link active sidebar-item rounded-15-px text-dark"
+       href="{% url 'accounts:logout' %}">Logout</a>
+  </div>
+</div>

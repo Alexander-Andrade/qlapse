@@ -3,7 +3,8 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <div class="row justify-content-center mt-5">
+  <div class="container">
+    <div class="row d-flex justify-content-center mt-5">
       <div class="d-flex flex-column">
           <div class="d-flex justify-content-center">
             <img src="{% static "accounts/logo.webp" %}" alt="Logo" width="128" height="128">
@@ -22,7 +23,7 @@
           {% endif %}
         {% endif %}
 
-        <form method="post" action="{% url 'login' %}">
+        <form method="post" action="{% url 'login' %}" style="width: 30rem">
           {% csrf_token %}
           {{ form|crispy }}
           <input type="submit" class="btn btn-primary btn-block" value="login" />
@@ -33,4 +34,5 @@
         <p class="mt-3"><a href="{% url 'password_reset' %}">Lost password?</a></p>
       </div>
     </div>
+  </div>
 {% endblock %}

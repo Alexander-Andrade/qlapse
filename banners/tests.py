@@ -12,8 +12,8 @@ class BannerCreatorTest(TestCase):
 
     @vcr.use_cassette('banners/cassettes/banner_creator_create.yaml')
     def test_create(self):
-        result = BannerCreator(user=self.user).create()
-        self.assertIsInstance(result['success'], Banner)
+        creation_result = BannerCreator(user=self.user).create()
+        self.assertIsInstance(creation_result.result, Banner)
 
 
         

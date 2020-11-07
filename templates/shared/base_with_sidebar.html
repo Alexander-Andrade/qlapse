@@ -1,0 +1,14 @@
+{% extends "shared/base.html" %}
+
+{% block body %}
+  <div class="container">
+    <div class="d-flex flex-row mt-5">
+      {% include 'shared/sidebar.html' %}
+
+      <div class="d-flex flex-column ml-3">
+        {% block main_page %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

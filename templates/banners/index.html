@@ -1,11 +1,29 @@
-{% extends "shared/base.html" %}
-{% load static %}
+{% extends "shared/base_with_sidebar.html" %}
 
-{% block body %}
-<form action="{% url 'banners:create' %}"  method="post" >
-  {% csrf_token %}
+{% block main_page %}
+  <div class="card rounded-15-px" style="width: 40rem">
+  <div class="card-body">
+    <div class="d-flex flex-row justify-content-between align-items-center">
+      <p class="font-weight-bold mb-0">Banners</p>
+      {% include 'banners/create.html' %}
+    </div>
+  </div>
+  <hr class="ml-3 mr-3 mb-0 mt-0">
+  <div class="card-body">
+
+  <div class="d-flex flex-column">
+    {% for banner in banners %}
+      <a href="{{ banner.upload.url }}"
+         class="pb-2 pt-2 text-dark sidebar-item rounded-15-px text-decoration-none" download>
+        &nbsp; {{ banner.phone_number }}
+      </a>
+    {% endfor %}
+  </div>
+
+  </div>
+</div>
 
 
-  <input type="submit" class="btn btn-primary btn-block" value="Create">
-</form>
+
+
 {% endblock %}

@@ -1,0 +1,11 @@
+.body-background {
+    background-color: #EAF2FE;
+}
+
+.rounded-15-px {
+    border-radius: 15px;
+}
+
+.sidebar-item:hover {
+    background-color: #EAF2FE;
+}
