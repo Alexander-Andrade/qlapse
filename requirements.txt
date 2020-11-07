@@ -19,4 +19,4 @@ svglib==1.0.1
 stripe==2.48.0
 twilio==6.46.0
 vcrpy==4.1.1
-
+pdf2image==1.14.0

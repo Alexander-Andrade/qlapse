@@ -16,9 +16,9 @@ class BookingListView(ListView):
 @login_required
 def create(request):
     if request.method == 'POST':
-        result = BannerCreator(user=request.user).create()
+        creation_result = BannerCreator(user=request.user).create()
 
-        if 'success' in result:
+        if creation_result.succeed:
             return redirect('banners:index')
         else:
-            return render(request, 'banners/index.html', {'error': result['error']})
+            return render(request, 'banners/index.html', {'error': creation_result.error})
