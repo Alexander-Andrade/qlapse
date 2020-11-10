@@ -16,8 +16,6 @@ class PdfBannerGenerator:
     PHONE_NUMBER_W = 100
     FONT_HEIGHT = 50
 
-    background_path = staticfiles_storage.path('banners/banner_background.svg')
-
     def __init__(self, phone_number):
         self.phone_number = phone_number
 
@@ -34,7 +32,7 @@ class PdfBannerGenerator:
         return pdf
 
     def __draw_background(self, canvas):
-        background_drawing = svg2rlg(self.background_path)
+        background_drawing = svg2rlg(staticfiles_storage.open('banners/banner_background.svg'))
         renderPDF.draw(background_drawing, canvas, 0, 0)
 
     def __draw_qr(self, canvas):
