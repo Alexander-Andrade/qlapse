@@ -3,7 +3,7 @@ from .services.banner_creator import BannerCreator
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
-from .models import Banner
+from .models import Banner, QueueItem, QueueItemStatus
 from twilio.twiml.voice_response import VoiceResponse, Say
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -48,3 +48,14 @@ def twilio_on_banner_call_webhook(request):
         response.say('Failed to put you in the queue')
 
     return HttpResponse(str(response))
+
+
+def queue(request):
+    # if request.method == 'POST':
+    #     creation_result = RegisterInQueue(user=queue_item).create()
+
+    #     if creation_result.succeed:
+    #         return redirect('banners:index')
+    #     else:
+    #         return render(request, 'client_manager/queue.html')
+    pass
