@@ -31,7 +31,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 # DEBUG = True
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'qlapse.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'qlapse.herokuapp.com', '49f7676ce7c9.ngrok.io']
 
 
 # Application definition

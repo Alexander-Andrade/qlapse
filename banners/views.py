@@ -4,6 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from .models import Banner
+from twilio.twiml.voice_response import VoiceResponse, Say
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from .services.register_in_queue import RegisterInQueue
 
 
 @method_decorator(login_required, name='dispatch')
@@ -11,6 +15,11 @@ class BookingListView(ListView):
     model = Banner
     template_name = 'banners/index.html'
     context_object_name = 'banners'
+
+    def get_queryset(self):
+        queryset = super(BookingListView, self).get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        return queryset
 
 
 @login_required
@@ -22,3 +31,20 @@ def create(request):
             return redirect('banners:index')
         else:
             return render(request, 'banners/index.html', {'error': creation_result.error})
+
+
+@csrf_exempt
+def twilio_on_banner_call_webhook(request):
+    register_result = RegisterInQueue(
+        client_phone_number=request.POST['From'],
+        banner_phone_number=request.POST['To']
+    ).register()
+
+    response = VoiceResponse()
+
+    if register_result.succeed:
+        response.say('You are added to the queue')
+    else:
+        response.say('Failed to put you in the queue')
+
+    return HttpResponse(str(response))

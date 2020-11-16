@@ -39,7 +39,11 @@ class BuyTwilioNumber:
 	def __buy_phone_number(self, phone_number):
 		try:
 			bought_number_info = self.client.incoming_phone_numbers.\
-			create(phone_number=phone_number, voice_url=settings.TWILIO_BANNER_CALL_CALLBACK_URL)
+			create(
+				phone_number=phone_number,
+				voice_url=settings.TWILIO_BANNER_CALL_CALLBACK_URL,
+				voice_method='POST'
+			)
 		except twilio.base.exceptions.TwilioRestException as e:
 			return Failure(e['message'])
 
