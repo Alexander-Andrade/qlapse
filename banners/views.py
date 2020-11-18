@@ -50,21 +50,20 @@ def twilio_on_banner_call_webhook(request):
 
     return HttpResponse(str(response))
 
-@login_required(login_url="/accounts/login/")
-def queue_list(request):
+def queue(request):
     queue_item = QueueItem.objects.all()
     time = datetime.now()
     context = {"queue_item": queue_item, "time": time}
     return render(request, "banners/queue.html", context)
 
-@login_required(login_url="/accounts/login/")
 def next(request):
-    pass
-    # queue_item = QueueItem.objects.get(pk=id)
+    # pass
+    queue_item = QueueItem.objects.get(pk=id)
+    status = QueueItemStatus.PROCESSED
+    QueueItemStatus.PROCESSING
     # context = {"queue_item": queue_item}
-    # return render(request, "banners/queue.html", context)
+    return render(request, "banners/queue.html", context)
 
-@login_required(login_url="/accounts/login/")
 def skip(request):
     pass
 
