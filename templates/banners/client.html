@@ -1,7 +1,9 @@
 {% for client_phone_number in queue %}
 <div class="card-body">
 	<div class="d-flex flex-column">
+		<p class="font-weight-bold mb-0">{{ queue_item }}</p>
 		<p class="font-weight-bold mb-0">{{ client_phone_number }}</p>
+		<p class="font-weight-bold mb-0">{{ wpis.entry.lastChangeDate|date:'Y-m-d H:i' }}</p>
 	</div>
 </div>
 {% endfor %}

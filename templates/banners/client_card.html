@@ -1,0 +1,28 @@
+
+<div class="card-body">
+	<h5 class="card-title">Now</h5>
+	<div class="d-flex flex-column">
+		<p class="font-weight-bold mb-0">{{ queue_item.id }}</p>
+		<p class="font-weight-bold mb-0">{{ client_phone_number.id }}</p>
+		<p class="font-weight-bold mb-0">{{ wpis.entry.lastChangeDate|date:'Y-m-d H:i' }}</p>
+	</div>
+</div>
+
+<form action="{% url 'banners:next' %}"  method="post" >
+  {% csrf_token %}
+  <input type="submit" class="btn btn-primary btn-block" value="Next">
+</form>
+<br>
+<form action="{% url 'banners:skip' %}"  method="post" >
+  {% csrf_token %}
+  <input type="submit" class="btn btn-primary btn-block" value="Skip">
+</form>
+
+<div class="card-body">
+	<h5 class="card-title">Next</h5>
+	<div class="d-flex flex-column">
+		<p class="font-weight-bold mb-0">{{ queue_item.id }}</p>
+		<p class="font-weight-bold mb-0">{{ client_phone_number.id }}</p>
+		<p class="font-weight-bold mb-0">{{ wpis.entry.lastChangeDate|date:'Y-m-d H:i' }}</p>
+	</div>
+</div>
