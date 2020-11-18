@@ -49,13 +49,8 @@ def twilio_on_banner_call_webhook(request):
 
     return HttpResponse(str(response))
 
-
-def queue(request):
-    # if request.method == 'POST':
-    #     creation_result = RegisterInQueue(user=queue_item).create()
-
-    #     if creation_result.succeed:
-    #         return redirect('banners:index')
-    #     else:
-    #         return render(request, 'client_manager/queue.html')
-    pass
+@login_required(login_url="/accounts/login/")
+def queue_list(request):
+    queue_item = QueueItem.objects.all()
+    context = {"queue_item": queue_item}
+    return render(request, "banners/queue.html", context)
