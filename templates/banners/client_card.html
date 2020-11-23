@@ -1,4 +1,5 @@
-
+{% load time %}
+{% include 'banners/client.html' %}
 <div class="card-body">
 	<h5 class="card-title">Now</h5>
 	<div class="d-flex flex-column">
@@ -8,12 +9,12 @@
 	</div>
 </div>
 
-<form action="{% url 'banners:next' %}"  method="post" >
+<form action="{{ banner.banner_id.next }}"  method="post" >
   {% csrf_token %}
   <input type="submit" class="btn btn-primary btn-block" value="Next">
 </form>
 <br>
-<form action="{% url 'banners:skip' %}"  method="post" >
+<form action="{{ banner.banner_id.skip }}"  method="post" >
   {% csrf_token %}
   <input type="submit" class="btn btn-primary btn-block" value="Skip">
 </form>
