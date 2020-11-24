@@ -47,14 +47,22 @@ def twilio_on_banner_call_webhook(request):
         response.say('You are added to the queue')
     else:
         response.say('Failed to put you in the queue')
-
     return HttpResponse(str(response))
 
-def queue(request):
-    queue_items = QueueItem.objects.filter(banner_id=request.GET['banner_id'])
+def queue_item(request, banner_id):
+    banner= Banner.objects.get(pk=id)
+    queue_items = Banner.objects.all()
+    items = QueueItem.objects.filter()
     current_time = datetime.now()
     context = {"queue_items": queue_items, "current_time": current_time}
+    return render(request, "banners/client.html", context)
+
+def queue(request, banner_id):
+    items = QueueItem.objects.filter()
+    phone_numbers = QueueItem.objects.filter()
+    context = {"items": items, "phone_numbers": phone_numbers}
     return render(request, "banners/queue.html", context)
+
 
 def next(request):
     pass

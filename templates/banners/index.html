@@ -16,13 +16,12 @@
     <table>
       <tr>
         <td>
-    <a href="{{ banner.banner_id.queue }}"
+    <a href="{% url 'banners:queue' banner.id %}"
          class="pb-2 pt-2 text-dark sidebar-item rounded-15-px text-decoration-none">{{ banner.phone_number }}</a></td>
          <td>
-    <!-- <p class="font-weight-bold mb-0">{{ banner.phone_number }}</p> -->
       <a href="{{ banner.upload.url }}"
          class="pb-2 pt-2 text-dark sidebar-item rounded-15-px text-decoration-none" download>
-        &nbsp; Download<!-- {{ banner.phone_number }} -->
+        &nbsp; Download
       </a></td>
     </tr>
     </table>
@@ -31,8 +30,5 @@
 
   </div>
 </div>
-
-
-
 
 {% endblock %}
