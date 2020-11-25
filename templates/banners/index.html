@@ -12,21 +12,18 @@
   <div class="card-body">
 
   <div class="d-flex flex-column">
+
+  <ul class="list-group list-group-flush">
     {% for banner in banners %}
-    <table>
-      <tr>
-        <td>
+    <li class="list-group-item">
     <a href="{% url 'banners:queue' banner.id %}"
-         class="pb-2 pt-2 text-dark sidebar-item rounded-15-px text-decoration-none">{{ banner.phone_number }}</a></td>
-         <td>
+         class="pb-2 pt-2 text-dark sidebar-item rounded-15-px text-decoration-none">{{ banner.phone_number }}</a>
       <a href="{{ banner.upload.url }}"
          class="pb-2 pt-2 text-dark sidebar-item rounded-15-px text-decoration-none" download>
         &nbsp; Download
-      </a></td>
-    </tr>
-    </table>
+      </a></li>
     {% endfor %}
-  </div>
+  </ul>
 
   </div>
 </div>
