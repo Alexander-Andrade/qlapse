@@ -1,5 +1,7 @@
 from django.shortcuts import redirect, render
 from .services.banner_creator import BannerCreator
+from .services.next_queue_item import NextQueueItem
+from .services.skip_item import SkipItem
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
@@ -48,3 +50,19 @@ def twilio_on_banner_call_webhook(request):
         response.say('Failed to put you in the queue')
 
     return HttpResponse(str(response))
+
+
+@login_required
+def next_queue_item(request, banner_id):
+    banner = Banner.objects.filter(id=banner_id).first()
+    next_item_result = NextQueueItem(banner=banner).next()
+
+    # TODO redirect to the queue page
+
+
+@login_required
+def skip_queue_item(request, banner_id):
+    banner = Banner.objects.filter(id=banner_id).first()
+    next_item_result = SkipItem(banner=banner).skip()
+
+    # TODO redirect to the queue page
