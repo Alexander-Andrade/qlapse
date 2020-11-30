@@ -4,6 +4,7 @@ from shared.validators.phone_validator import phone_regex_validator
 from django.utils.translation import gettext_lazy as _
 from accounts.models import CustomUser
 from enum import IntEnum
+from positions.fields import PositionField
 
 
 class Banner(models.Model):
@@ -22,7 +23,6 @@ class Banner(models.Model):
 class QueueItemStatus(IntEnum):
     QUEUE = 1
     PROCESSING = 2
-    PROCESSED = 3
 
     @classmethod
     def choices(cls):
@@ -35,11 +35,13 @@ class QueueItem(models.Model):
 
     status = models.IntegerField(choices=QueueItemStatus.choices(), default=QueueItemStatus.QUEUE)
 
+    position = PositionField(collection='banner')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ('position',)
 
     def __str__(self):
         return self.phone_number
