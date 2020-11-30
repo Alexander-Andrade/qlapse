@@ -8,7 +8,6 @@ from twilio.twiml.voice_response import VoiceResponse, Say
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from .services.register_in_queue import RegisterInQueue
-from datetime import datetime
 
 
 @method_decorator(login_required, name='dispatch')
@@ -51,7 +50,6 @@ def twilio_on_banner_call_webhook(request):
 
 
 def queue(request, banner_id):
-    clients = QueueItem.objects.filter()
-    phone_numbers = QueueItem.objects.filter()
-    context = {"clients": clients, "phone_numbers": phone_numbers}
+    clients = QueueItem.objects.filter(banner_id=banner_id)
+    context = {"clients": clients}
     return render(request, "banners/queue.html", context)

@@ -1,5 +1,9 @@
-  <ul class="list-group list-group-flush">
-  	{% for client in clients %}
-    <li class="list-group-item">{{ client.id }}) {{ client.phone_number}}</li>
-    {% endfor %}
-  </ul>
+ {% load time %}
+
+{% for client in clients %}
+<li class="list-group-item">{{ client.id }}) {{ client.phone_number}}
+
+	<!-- <p>Waiting time of {{ client.current_time }}_ minutes {{ client.time }}</p> -->
+</li>
+{% endfor %}
+ 
