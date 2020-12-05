@@ -50,6 +50,6 @@ def twilio_on_banner_call_webhook(request):
 
 
 def queue(request, banner_id):
-    clients = QueueItem.objects.filter(banner_id=banner_id)
-    context = {"clients": clients}
+    queue_items = QueueItem.objects.filter(banner_id=banner_id)
+    context = {"queue_items": queue_items}
     return render(request, "banners/queue.html", context)

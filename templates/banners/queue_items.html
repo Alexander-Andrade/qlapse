@@ -1,0 +1,11 @@
+{% for queue_item in queue_items %}
+
+<li class="list-group-item">
+	{{ forloop.counter }}
+	<div class="d-inline ml-2 mr-4">{{ queue_item.phone_number }}</div>
+	<div class="d-inline ml-4 mr-2">Status {{ queue_item.get_status_display }}</div>
+	<div class="d-inline mr-2">{{ queue_item.get_queue_items_status }}</div>
+	<div class="d-inline float-lg-right">Waiting time of _ {{ queue_item.wait_time }} minutes</div>
+</li>
+{% endfor %}
+ 
