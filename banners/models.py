@@ -21,7 +21,7 @@ class Banner(models.Model):
 
 
 class QueueItemStatus(IntEnum):
-    QUEUE = 1
+    QUEUED = 1
     PROCESSING = 2
 
     @classmethod
@@ -33,7 +33,7 @@ class QueueItem(models.Model):
     banner = models.ForeignKey(Banner, on_delete=models.CASCADE, related_name='queue')
     phone_number = models.CharField(_('phone'), validators=[phone_regex_validator], max_length=17)
 
-    status = models.IntegerField(choices=QueueItemStatus.choices(), default=QueueItemStatus.QUEUE)
+    status = models.IntegerField(choices=QueueItemStatus.choices(), default=QueueItemStatus.QUEUED)
 
     position = PositionField(collection='banner')
 

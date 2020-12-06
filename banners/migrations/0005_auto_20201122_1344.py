@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='queueitem',
             name='status',
-            field=models.IntegerField(choices=[(1, 'QUEUE'), (2, 'PROCESSING'), (3, 'PROCESSED'), (4, 'SKIPPED')], default=banners.models.QueueItemStatus['QUEUE']),
+            field=models.IntegerField(choices=[(1, 'QUEUE'), (2, 'PROCESSING'), (3, 'PROCESSED'), (4, 'SKIPPED')], default=banners.models.QueueItemStatus['QUEUED']),
         ),
     ]

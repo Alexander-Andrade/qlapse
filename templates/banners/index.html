@@ -12,18 +12,33 @@
   <div class="card-body">
 
   <div class="d-flex flex-column">
-    {% for banner in banners %}
-      <a href="{{ banner.upload.url }}"
-         class="pb-2 pt-2 text-dark sidebar-item rounded-15-px text-decoration-none" download>
-        &nbsp; {{ banner.phone_number }}
-      </a>
-    {% endfor %}
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Phone number</th>
+            <th scope="col">Pdf</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for banner in banners %}
+            <tr>
+              <td class="sidebar-item rounded-15-px">
+                <a class="d-flex text-dark text-decoration-none"
+                   href="{% url 'banners:queue' banner_id=banner.id %}">{{ banner.phone_number }}
+                </a>
+              </td>
+              <td class="sidebar-item rounded-15-px">
+                <a class="d-flex text-dark text-decoration-none "
+                   href="{{ banner.upload.url }}" download>
+                Download
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
   </div>
 
   </div>
 </div>
-
-
-
-
 {% endblock %}

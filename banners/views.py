@@ -1,11 +1,11 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from .services.banner_creator import BannerCreator
 from .services.next_queue_item import NextQueueItem
 from .services.skip_item import SkipItem
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
-from .models import Banner
+from .models import Banner, QueueItem
 from twilio.twiml.voice_response import VoiceResponse, Say
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -13,13 +13,13 @@ from .services.register_in_queue import RegisterInQueue
 
 
 @method_decorator(login_required, name='dispatch')
-class BookingListView(ListView):
+class BannersListView(ListView):
     model = Banner
     template_name = 'banners/index.html'
     context_object_name = 'banners'
 
     def get_queryset(self):
-        queryset = super(BookingListView, self).get_queryset()
+        queryset = super(BannersListView, self).get_queryset()
         queryset = queryset.filter(user=self.request.user)
         return queryset
 
@@ -50,6 +50,14 @@ def twilio_on_banner_call_webhook(request):
         response.say('Failed to put you in the queue')
 
     return HttpResponse(str(response))
+
+
+@login_required
+def queue(request, banner_id):
+    banner = get_object_or_404(Banner, pk=banner_id)
+    context = {'banner': banner, 'queue_items': banner.queue.all()}
+
+    return render(request, 'banners/queue.html', context)
 
 
 @login_required

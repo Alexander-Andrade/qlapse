@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('phone_number', models.CharField(max_length=17, validators=[django.core.validators.RegexValidator(message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.", regex='^\\+?1?\\d{9,15}$')], verbose_name='phone')),
-                ('status', models.IntegerField(choices=[(1, 'QUEUE'), (2, 'PROCESSING'), (3, 'PROCESSED')], default=banners.models.QueueItemStatus['QUEUE'])),
+                ('status', models.IntegerField(choices=[(1, 'QUEUE'), (2, 'PROCESSING'), (3, 'PROCESSED')], default=banners.models.QueueItemStatus['QUEUED'])),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('banner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banners.Banner')),
