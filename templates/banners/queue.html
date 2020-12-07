@@ -1,0 +1,58 @@
+{% extends "shared/base_with_sidebar.html" %}
+{% load queue_filters %}
+
+{% block main_page %}
+  <div class="card rounded-15-px" style="width: 40rem">
+  <div class="card-body">
+    <div class="d-flex flex-row justify-content-between align-items-center">
+      <p class="font-weight-bold mb-0">Queue of {{ banner.phone_number }} banner</p>
+      <div class="d-flex">
+        <form class="mr-2" action="{% url 'banners:next_queue_item' banner_id=banner.id %}"  method="post" >
+          {% csrf_token %}
+          <input type="submit" class="btn btn-primary btn-block" value="Next">
+        </form>
+
+        <form action="{% url 'banners:skip_queue_item' banner_id=banner.id %}"  method="post" >
+          {% csrf_token %}
+          <input type="submit" class="btn btn-primary btn-block" value="Skip">
+        </form>
+      </div>
+    </div>
+  </div>
+  <hr class="ml-3 mr-3 mb-0 mt-0">
+  <div class="card-body">
+
+  <div class="d-flex flex-column">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">position</th>
+            <th scope="col">phone number</th>
+            <th scope="col">status</th>
+            <th scope="col">waiting time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for queue_item in queue_items %}
+            <tr>
+              <td>
+                {{ queue_item.position|add:"1" }}
+              </td>
+              <td>
+                {{ queue_item.phone_number }}
+              </td>
+              <td>
+                {{ queue_item.get_status_display|lower }}
+              </td>
+              <td>
+                {{ queue_item.created_at|time_passed_since }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+
+  </div>
+</div>
+{% endblock %}
