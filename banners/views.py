@@ -10,6 +10,7 @@ from twilio.twiml.voice_response import VoiceResponse, Say
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from .services.register_in_queue import RegisterInQueue
+from django.contrib import messages
 
 
 @method_decorator(login_required, name='dispatch')
@@ -29,11 +30,10 @@ def create(request):
     if request.method == 'POST':
         creation_result = BannerCreator(user=request.user).create()
 
-        if creation_result.succeed:
-            return redirect('banners:index')
-        else:
-            return render(request, 'banners/index.html', {'error': creation_result.error})
+        if creation_result.failed:
+            messages.error(request, creation_result.error)
 
+        return redirect('banners:index')
 
 @csrf_exempt
 def twilio_on_banner_call_webhook(request):
@@ -62,15 +62,21 @@ def queue(request, banner_id):
 
 @login_required
 def next_queue_item(request, banner_id):
-    banner = Banner.objects.filter(id=banner_id).first()
+    banner = get_object_or_404(Banner, pk=banner_id)
     next_item_result = NextQueueItem(banner=banner).next()
 
-    # TODO redirect to the queue page
+    if next_item_result.failed:
+        messages.error(request, next_item_result.error)
+
+    return redirect('banners:queue', banner_id=banner_id)
 
 
 @login_required
 def skip_queue_item(request, banner_id):
-    banner = Banner.objects.filter(id=banner_id).first()
-    next_item_result = SkipItem(banner=banner).skip()
+    banner = get_object_or_404(Banner, pk=banner_id)
+    skip_item_result = SkipItem(banner=banner).skip()
 
-    # TODO redirect to the queue page
+    if skip_item_result.failed:
+        messages.error(request, skip_item_result.error)
+
+    return redirect('banners:queue', banner_id=banner_id)

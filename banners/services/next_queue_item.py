@@ -39,4 +39,4 @@ class NextQueueItem:
             )
             return Success(item)
         except twilio.base.exceptions.TwilioException as e:
-            return Failure(e['message'])
+            return Failure(e.msg)
