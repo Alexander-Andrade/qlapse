@@ -45,7 +45,7 @@ class BuyTwilioNumber:
 				voice_method='POST'
 			)
 		except twilio.base.exceptions.TwilioRestException as e:
-			return Failure(e['message'])
+			return Failure(e.msg)
 
 		return Success(bought_number_info.phone_number)
 
