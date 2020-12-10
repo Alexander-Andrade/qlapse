@@ -6,15 +6,17 @@ register = template.Library()
 
 @register.filter(name='time_passed_since')
 def time_passed_since(value):
-    # breakpoint()
     delta = datetime.now(timezone.utc) - value
+
     days = delta.days
     seconds = delta.seconds
     hours = seconds // 3600
     minutes = (seconds // 60) % 60
-    return "%s %s %s %s" % (
+    return "%s%s %s%s %s%s" % (
+            abs(days),
+            "d",
             abs(hours),
-            ("hour" if abs(hours) == 1 else "hours"),
+            "h",
             abs(minutes),
-            ("minute" if abs(minutes) == 1 else "minutes")
+            "m"
     )

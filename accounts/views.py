@@ -7,10 +7,6 @@ from .forms import CustomUserCreationForm
 from django.urls import reverse_lazy
 
 
-def index(request):
-    return render(request, 'accounts/index.html')
-
-
 class CustomUserCreate(CreateView):
     model = CustomUser
     template_name = 'accounts/registration.html'
