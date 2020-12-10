@@ -23,6 +23,7 @@
   <div class="card-body">
 
   <div class="d-flex flex-column">
+    {% if queue_items %}
       <table class="table table-borderless">
         <thead>
           <tr>
@@ -51,6 +52,9 @@
           {% endfor %}
         </tbody>
       </table>
+    {% else %}
+      <p>The queue is empty</p>
+    {% endif %}
   </div>
 
   </div>
