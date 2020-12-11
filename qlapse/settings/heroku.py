@@ -129,7 +129,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = '/index/'
+LOGIN_REDIRECT_URL = '/banners/'
 LOGOUT_REDIRECT_URL = "/accounts/login"
 
 STRIPE_PUBLISHABLE_KEY = env.str('STRIPE_PUBLISHABLE_KEY')
