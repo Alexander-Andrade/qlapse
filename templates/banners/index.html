@@ -12,6 +12,7 @@
   <div class="card-body">
 
   <div class="d-flex flex-column">
+    {% if banners %}
       <table class="table table-borderless">
         <thead>
           <tr>
@@ -37,6 +38,9 @@
           {% endfor %}
         </tbody>
       </table>
+    {% else %}
+        <p>There is no banners</p>
+    {% endif %}
   </div>
 
   </div>
