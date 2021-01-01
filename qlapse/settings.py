@@ -38,7 +38,10 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'qlapse.herokuapp.com',
-    '54.144.43.192']
+    '54.144.43.192',
+    'app.qlapse.com',
+    'www.app.qlapse.com'
+]
 
 
 # Application definition
