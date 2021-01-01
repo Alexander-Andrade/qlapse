@@ -7,11 +7,9 @@ fetch("/stripe_payments/config/")
 
   document.querySelector("#press_stripe_payment").addEventListener("click", () => {
     // Get Checkout Session ID
-    debugger
     fetch("/stripe_payments/create-checkout-session/")
     .then((result) => { return result.json(); })
     .then((data) => {
-      console.log(data);
       // Redirect to Stripe Checkout
       return stripe.redirectToCheckout({sessionId: data.sessionId})
     })
