@@ -180,3 +180,14 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+USE_SES = env.bool('USE_SES', default=False)
+if USE_SES:
+    EMAIL_BACKEND = 'django_ses.SESBackend'
+    AWS_SES_ACCESS_KEY_ID = env.str('AWS_ACCESS_KEY_ID')
+    AWS_SES_SECRET_ACCESS_KEY = env.str('AWS_SECRET_ACCESS_KEY')
+    # AWS_SES_REGION_NAME = 'us-east-1'
+    # AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
