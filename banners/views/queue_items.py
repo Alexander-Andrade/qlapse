@@ -34,3 +34,10 @@ def skip_queue_item(request, banner_id):
         messages.error(request, skip_item_result.error)
 
     return redirect('banners:queue', banner_id=banner_id)
+
+
+def queue_entrypoint(request, banner_id):
+    banner = get_object_or_404(Banner, pk=banner_id)
+    context = {'banner': banner}
+
+    return render(request, 'banners/queue_entrypoint.html', context)

@@ -26,3 +26,5 @@ faker==4.14.2
 factory-boy==3.1.0
 django-positions==0.6.0
 django-ses==1.0.3
+pyTelegramBotAPI==3.7.6
+django-enumfield==2.0.2

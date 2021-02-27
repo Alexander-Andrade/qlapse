@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from ..models import Banner
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.conf import settings
 
 
 @method_decorator(login_required, name='dispatch')
@@ -22,7 +23,9 @@ class BannersListView(ListView):
 @login_required
 def create(request):
     if request.method == 'POST':
-        creation_result = BannerCreator(user=request.user).create()
+        creation_result = BannerCreator(
+            user=request.user,
+            fake_banner_number=settings.FAKE_BANNER_PHONE_NUMBERS).create()
 
         if creation_result.failed:
             messages.error(request, creation_result.error)

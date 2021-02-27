@@ -52,4 +52,4 @@ class TwilioOnBannerCallWebhook(TestCase):
         self.assertTrue(twilio_client_class.create.called)
         self.assertEqual(twilio_client_class.create.call_args[1]['from_'], self.banner_number)
         self.assertEqual(twilio_client_class.create.call_args[1]['to'], self.client_number)
-        self.assertEqual(twilio_client_class.create.call_args[1]['body'], 'You are in Queue. There are 0 in front of you.')
+        self.assertEqual(twilio_client_class.create.call_args[1]['body'], 'You are in Queue.There are 0 in front of you.')
