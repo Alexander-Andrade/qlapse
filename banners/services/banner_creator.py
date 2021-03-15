@@ -15,8 +15,6 @@ class BannerCreator:
 
     @transaction.atomic
     def create(self):
-        phone_number = None
-
         if not self.fake_banner_number:
             buy_number_result = BuyTwilioNumber().buy()
 

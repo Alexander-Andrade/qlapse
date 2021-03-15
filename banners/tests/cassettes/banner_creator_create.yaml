@@ -9,7 +9,7 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Basic QUMwOTEyZGU5ZDRkZjI1NDIxOWZiNDk1NGNjNjJjMWRhYzo1OGEyNGUxZmFkMGZhZWNkYTc2NDhjYTFlMjkzOGJiZg==
+      - Basic QUNjNDNjMmUzYjY5ODY3ZjU1MzVjNTZlNjhhMWQyMGVjNTpjNjYxNWEyNGI2NTdmYmRkMDFjZGE0NTQ2NDEyZmQ4YQ==
       Connection:
       - keep-alive
       User-Agent:
@@ -17,15 +17,14 @@ interactions:
       X-Twilio-Client:
       - python-6.46.0
     method: GET
-    uri: https://api.twilio.com/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/AvailablePhoneNumbers/US/Local.json?PageSize=1
+    uri: https://api.twilio.com/2010-04-01/Accounts/ACc43c2e3b69867f5535c56e68a1d20ec5/AvailablePhoneNumbers/US/Local.json?PageSize=1
   response:
     body:
-      string: '{"available_phone_numbers": [{"friendly_name": "(334) 367-5405", "phone_number":
-        "+13343675405", "lata": "478", "rate_center": "LOUISVILLE", "latitude": "31.800600",
-        "longitude": "-85.573000", "locality": "Louisville", "region": "AL", "postal_code":
-        "36048", "iso_country": "US", "address_requirements": "none", "beta": false,
-        "capabilities": {"voice": true, "SMS": true, "MMS": true, "fax": true}}],
-        "uri": "/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/AvailablePhoneNumbers/US/Local.json?PageSize=1"}'
+      string: '{"available_phone_numbers": [{"friendly_name": "(470) 287-1123", "phone_number":
+        "+14702871123", "lata": "438", "rate_center": "CLERMONT", "latitude": "34.478700",
+        "longitude": "-83.775400", "locality": "Clermont", "region": "GA", "postal_code":
+        "30527", "iso_country": "US", "address_requirements": "none", "beta": false,
+        "capabilities": {"voice": true, "SMS": true, "MMS": true}}], "uri": "/2010-04-01/Accounts/ACc43c2e3b69867f5535c56e68a1d20ec5/AvailablePhoneNumbers/US/Local.json?PageSize=1"}'
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -41,19 +40,19 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '513'
+      - '496'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 04 Nov 2020 16:45:03 GMT
+      - Mon, 01 Mar 2021 19:37:46 GMT
       Strict-Transport-Security:
       - max-age=31536000
       Twilio-Concurrent-Requests:
       - '1'
       Twilio-Request-Duration:
-      - '0.535'
+      - '0.365'
       Twilio-Request-Id:
-      - RQ796a25228c534945889805aa2b33b59f
+      - RQa40ac05c9ba242249c01ac9a82ca7772
       X-API-Domain:
       - api.twilio.com
       X-Home-Region:
@@ -66,7 +65,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: PhoneNumber=%2B13343675405
+    body: PhoneNumber=%2B14702871123&VoiceMethod=POST&VoiceUrl=https%3A%2F%2F3c87fdccfdeb.ngrok.io%2Fbanners%2Ftwilio_on_banner_call_webhook
     headers:
       Accept:
       - application/json
@@ -75,11 +74,11 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - Basic QUMwOTEyZGU5ZDRkZjI1NDIxOWZiNDk1NGNjNjJjMWRhYzo1OGEyNGUxZmFkMGZhZWNkYTc2NDhjYTFlMjkzOGJiZg==
+      - Basic QUNjNDNjMmUzYjY5ODY3ZjU1MzVjNTZlNjhhMWQyMGVjNTpjNjYxNWEyNGI2NTdmYmRkMDFjZGE0NTQ2NDEyZmQ4YQ==
       Connection:
       - keep-alive
       Content-Length:
-      - '26'
+      - '130'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -87,22 +86,21 @@ interactions:
       X-Twilio-Client:
       - python-6.46.0
     method: POST
-    uri: https://api.twilio.com/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/IncomingPhoneNumbers.json
+    uri: https://api.twilio.com/2010-04-01/Accounts/ACc43c2e3b69867f5535c56e68a1d20ec5/IncomingPhoneNumbers.json
   response:
     body:
-      string: '{"sid": "PN2752e765b54faf2efe48099f060357b6", "account_sid": "AC0912de9d4df254219fb4954cc62c1dac",
-        "friendly_name": "(334) 367-5405", "phone_number": "+13343675405", "voice_url":
-        "https://demo.twilio.com/welcome/voice/", "voice_method": "POST", "voice_fallback_url":
-        null, "voice_fallback_method": "POST", "voice_caller_id_lookup": false, "date_created":
-        "Wed, 04 Nov 2020 16:45:04 +0000", "date_updated": "Wed, 04 Nov 2020 16:45:04
-        +0000", "sms_url": "https://demo.twilio.com/welcome/sms/reply/", "sms_method":
-        "POST", "sms_fallback_url": "", "sms_fallback_method": "POST", "address_requirements":
-        "none", "beta": false, "capabilities": {"voice": true, "sms": true, "mms":
-        true, "fax": true}, "voice_receive_mode": "voice", "status_callback": "",
-        "status_callback_method": "POST", "api_version": "2010-04-01", "voice_application_sid":
+      string: '{"sid": "PNbba0c7a152255a04e4afd6f84a5f1e51", "account_sid": "ACc43c2e3b69867f5535c56e68a1d20ec5",
+        "friendly_name": "(470) 287-1123", "phone_number": "+14702871123", "voice_url":
+        "https://3c87fdccfdeb.ngrok.io/banners/twilio_on_banner_call_webhook", "voice_method":
+        "POST", "voice_fallback_url": null, "voice_fallback_method": "POST", "voice_caller_id_lookup":
+        false, "date_created": "Mon, 01 Mar 2021 19:37:46 +0000", "date_updated":
+        "Mon, 01 Mar 2021 19:37:46 +0000", "sms_url": "", "sms_method": "POST", "sms_fallback_url":
+        "", "sms_fallback_method": "POST", "address_requirements": "none", "beta":
+        false, "capabilities": {"voice": true, "sms": true, "mms": true}, "status_callback":
+        "", "status_callback_method": "POST", "api_version": "2010-04-01", "voice_application_sid":
         null, "sms_application_sid": "", "origin": "twilio", "trunk_sid": null, "emergency_status":
         "Inactive", "emergency_address_sid": null, "address_sid": null, "identity_sid":
-        null, "bundle_sid": null, "uri": "/2010-04-01/Accounts/AC0912de9d4df254219fb4954cc62c1dac/IncomingPhoneNumbers/PN2752e765b54faf2efe48099f060357b6.json",
+        null, "bundle_sid": null, "uri": "/2010-04-01/Accounts/ACc43c2e3b69867f5535c56e68a1d20ec5/IncomingPhoneNumbers/PNbba0c7a152255a04e4afd6f84a5f1e51.json",
         "status": "in-use"}'
     headers:
       Access-Control-Allow-Credentials:
@@ -119,19 +117,19 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '1180'
+      - '1123'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 04 Nov 2020 16:45:04 GMT
+      - Mon, 01 Mar 2021 19:37:47 GMT
       Strict-Transport-Security:
       - max-age=31536000
       Twilio-Concurrent-Requests:
       - '1'
       Twilio-Request-Duration:
-      - '0.866'
+      - '0.615'
       Twilio-Request-Id:
-      - RQ3cea1163de9040faaa7c4db43a0e9273
+      - RQ49ce6a18dd7742a59834a744de69619f
       X-API-Domain:
       - api.twilio.com
       X-Home-Region:

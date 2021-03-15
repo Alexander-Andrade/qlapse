@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'accounts',
     'payments',
     'stripe_payments',
-    'banners.apps.BannersConfig',
+    'banners',
 ]
 
 MIDDLEWARE = [
