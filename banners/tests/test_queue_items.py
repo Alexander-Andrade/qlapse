@@ -1,11 +1,15 @@
 from django.test import TestCase, Client
-from banners.models import Banner, QueueItem, QueueItemStatus, QueueItemSource
+
+from accounts.tests.factories.users import UserFactory
+from banners.models import QueueItem, QueueItemStatus
 from banners.models import BannerTelegram
 from django.test.client import RequestFactory
-from banners.views import next_queue_item, skip_queue_item, queue
+
+from banners.tests.factories.banners import BannerFactory
+from banners.tests.factories.queue_items import QueueItemFactory, QueueItemTelegramFactory
+from banners.views import next_queue_item, skip_queue_item
 from unittest.mock import patch
 from django.contrib.auth import get_user_model
-from django.core.files import File
 from django.test import override_settings
 import tempfile
 from django.urls import reverse
@@ -16,22 +20,16 @@ User = get_user_model()
 class NextQueueItemTwilio(TestCase):
     @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
-        user = User.objects.create_user(email='normal@user.com', password='foo', phone_number='+375293969579')
+        self.banner = BannerFactory()
 
-        self.banner = Banner.objects.create(
-            upload=File(tempfile.NamedTemporaryFile(suffix='.pdf')),
-            user=user,
-            phone_number='+375293969579'
-        )
-
-        self.queue_item1 = self.banner.queue.create(phone_number='+375445677421')
-
-        self.queue_item2 = self.banner.queue.create(phone_number='+375445677422')
+        self.queue_item1 = QueueItemFactory(banner=self.banner)
+        self.queue_item2 = QueueItemFactory(banner=self.banner)
 
         self.request_factory = RequestFactory()
         self.request = self.request_factory.\
-            post(reverse("banners:next_queue_item", kwargs={'banner_id': self.banner.id}))
-        self.request.user = user
+            post(reverse("banners:next_queue_item",
+                         kwargs={'banner_id': self.banner.id}))
+        self.request.user = self.banner.user
 
     @patch('twilio.rest.Client.messages')
     def test_removes_first_queue_element_if_it_has_processing_status(self, twilio_client_class):
@@ -76,41 +74,16 @@ class NextQueueItemTwilio(TestCase):
 class NextQueueItemTelegram(TestCase):
     @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
-        user = User.objects.create_user(email='normal@user.com',
-                                        password='foo',
-                                        phone_number='+375293969579')
+        self.banner = BannerFactory()
 
-        self.banner = Banner.objects.create(
-            upload=File(tempfile.NamedTemporaryFile(suffix='.pdf')),
-            user=user,
-            phone_number='+375293969579'
-        )
-
-        self.queue_item1 = self.banner.queue.create(
-            phone_number='+375445677421',
-            source=QueueItemSource.TELEGRAM,
-            telegram_chat_id=1
-        )
-
-        BannerTelegram.objects.create(
-            banner=self.banner, chat_id=self.queue_item1.telegram_chat_id
-        )
-
-        self.queue_item2 = self.banner.queue.create(
-            phone_number='+375445677422',
-            source=QueueItemSource.TELEGRAM,
-            telegram_chat_id=2
-        )
-
-        BannerTelegram.objects.create(
-            banner=self.banner, chat_id=self.queue_item2.telegram_chat_id
-        )
+        self.queue_item1 = QueueItemTelegramFactory(banner=self.banner)
+        self.queue_item2 = QueueItemTelegramFactory(banner=self.banner)
 
         self.request_factory = RequestFactory()
         self.request = self.request_factory.\
             post(reverse("banners:next_queue_item",
                          kwargs={'banner_id': self.banner.id}))
-        self.request.user = user
+        self.request.user = self.banner.user
 
     @patch('telebot.TeleBot')
     @patch('telebot.types.ReplyKeyboardRemove')
@@ -149,28 +122,17 @@ class NextQueueItemTelegram(TestCase):
 class SkipQueueItem(TestCase):
     @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
-        User = get_user_model()
-        user = User.objects.create_user(email='normal@user.com',
-                                        password='foo',
-                                        phone_number='+375293969579')
-
-        self.banner = Banner.objects.create(
-            upload=File(tempfile.NamedTemporaryFile(suffix='.pdf')),
-            user=user,
-            phone_number='+375293969579'
-        )
+        self.banner = BannerFactory()
 
         self.request_factory = RequestFactory()
         self.request = self.request_factory.\
             post(reverse("banners:next_queue_item",
                          kwargs={'banner_id': self.banner.id}))
-        self.request.user = user
+        self.request.user = self.banner.user
 
     def test_next_item_skipped(self):
-        queue_item1 = self.banner.queue.create(
-            phone_number='+375445677421')
-        queue_item2 = self.banner.queue.create(
-            phone_number='+375445877422')
+        queue_item1 = QueueItemFactory(banner=self.banner)
+        queue_item2 = QueueItemFactory(banner=self.banner)
 
         skip_queue_item(self.request, self.banner.id)
 
@@ -201,9 +163,7 @@ class SkipQueueItem(TestCase):
         )
 
     def test_returns_queue_redirect(self):
-        self.banner.queue.create(
-            phone_number='+375445677421'
-        )
+        QueueItemFactory(banner=self.banner)
 
         response = skip_queue_item(self.request, self.banner.id)
         response.client = Client()
@@ -215,14 +175,7 @@ class SkipQueueItem(TestCase):
         )
 
     def test_banner_telegram_deleted(self):
-        queue_item1 = self.banner.queue.create(
-            phone_number='+375445677421',
-            source=QueueItemSource.TELEGRAM,
-            telegram_chat_id=2
-        )
-        BannerTelegram.objects.create(
-            banner=self.banner, chat_id=queue_item1.telegram_chat_id
-        )
+        queue_item1 = QueueItemTelegramFactory(banner=self.banner)
 
         skip_queue_item(self.request, self.banner.id)
 
@@ -237,23 +190,12 @@ class SkipQueueItem(TestCase):
 class Queue(TestCase):
     @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
-        user = User.objects.create_user(email='normal@user.com',
-                                        password='foo',
-                                        phone_number='+375293969579')
-
-        self.banner = Banner.objects.create(
-            upload=File(tempfile.NamedTemporaryFile(suffix='.pdf')),
-            user=user,
-            phone_number='+375293969579'
-        )
-
-        self.queue_item1 = self.banner.queue.create(
-            phone_number='+375445677421'
-        )
-
+        password = 'foo'
+        self.user = UserFactory(password=password)
+        self.banner = BannerFactory(user=self.user)
+        self.queue_item1 = QueueItemFactory(banner=self.banner)
         self.client = Client()
-        self.client.login(username='normal@user.com',
-                          password='foo')
+        self.client.login(username=self.user.email, password=password)
 
     def test_queue_rendered(self):
         response = self.client.get(
@@ -268,19 +210,8 @@ class Queue(TestCase):
 class QueueEntrypoint(TestCase):
     @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
-        user = User.objects.create_user(email='normal@user.com',
-                                        password='foo',
-                                        phone_number='+375293969579')
-
-        self.banner = Banner.objects.create(
-            upload=File(tempfile.NamedTemporaryFile(suffix='.pdf')),
-            user=user,
-            phone_number='+375293969579'
-        )
-
-        self.queue_item1 = self.banner.queue.create(
-            phone_number='+375445677421'
-        )
+        self.banner = BannerFactory()
+        self.queue_item1 = QueueItemFactory(banner=self.banner)
 
         self.client = Client()
 

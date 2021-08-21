@@ -1,24 +1,16 @@
 from django.test import TestCase
 import tempfile
-from django.contrib.auth import get_user_model
-from banners.models import *
 from django.test import override_settings
-from django.core.files import File
+from banners.tests.factories.banners import BannerFactory
+from banners.tests.factories.queue_items import QueueItemFactory
 
 
+@override_settings(MEDIA_ROOT=tempfile.gettempdir())
 class QueueItemModel(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
-        User = get_user_model()
-        user = User.objects.create_user(email='normal@user.com', password='foo', phone_number='+375293969579')
-
-        self.banner = Banner.objects.create(
-            upload=File(tempfile.NamedTemporaryFile(suffix='.pdf')),
-            user=user,
-            phone_number='+375293969579'
-        )
-        self.queue_item1 = self.banner.queue.create(phone_number='+375445677421')
-        self.queue_item2 = self.banner.queue.create(phone_number='+375445677422')
+        self.banner = BannerFactory()
+        self.queue_item1 = QueueItemFactory(banner=self.banner)
+        self.queue_item2 = QueueItemFactory(banner=self.banner)
 
     def test_items_order_is_correct_on_queue_extension(self):
         self.assertEqual(self.queue_item1.position, 0)

@@ -14,6 +14,7 @@ class NotifyNextPersonInLine:
         markup = types.ReplyKeyboardRemove()
         self.bot.send_message(self.item.telegram_chat_id, 'Your turn',
                               reply_markup=markup)
+
         BannerTelegram.objects.filter(
             banner=self.item.banner, chat_id=self.item.telegram_chat_id
         ).delete()
