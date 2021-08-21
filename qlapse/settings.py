@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import environ
+from common.utils import site_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +41,8 @@ ALLOWED_HOSTS = [
     'qlapse.herokuapp.com',
     '54.144.43.192',
     'app.qlapse.com',
-    'www.app.qlapse.com'
+    'www.app.qlapse.com',
+    '3c87fdccfdeb.ngrok.io'
 ]
 
 
@@ -58,7 +60,7 @@ INSTALLED_APPS = [
     'accounts',
     'payments',
     'stripe_payments',
-    'banners'
+    'banners',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +136,8 @@ USE_L10N = True
 USE_TZ = True
 
 
+BASE_URL = env.str('BASE_URL')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -151,7 +155,7 @@ STRIPE_SECRET_KEY = env.str('STRIPE_SECRET_KEY')
 
 TWILIO_ACCOUNT_SID = env.str('TWILIO_ACCOUNT_SID')
 TWILIO_ACCOUNT_TOKEN = env.str('TWILIO_ACCOUNT_TOKEN')
-TWILIO_BANNER_CALL_CALLBACK_URL = env.str('TWILIO_BANNER_CALL_CALLBACK_URL')
+TWILIO_BANNER_CALL_CALLBACK_URL = site_url(env.str('TWILIO_BANNER_CALL_CALLBACK_PATH'))
 
 USE_S3 = env.bool('USE_S3', default=False)
 if USE_S3:
@@ -191,3 +195,8 @@ if USE_SES:
     # AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws.com'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+TELEGRAM_QUEUE_BOT_TOKEN = env.str('TELEGRAM_QUEUE_BOT_TOKEN')
+TELEGRAM_QUEUE_BOT_WEBHOOK_URL = site_url(env.str('TELEGRAM_QUEUE_BOT_WEBHOOK_PATH'))
+TELEGRAM_API_INTERVAL = env.int('TELEGRAM_API_INTERVAL', default=1)
+FAKE_BANNER_PHONE_NUMBERS = env.bool('FAKE_BANNER_PHONE_NUMBERS', default=False)

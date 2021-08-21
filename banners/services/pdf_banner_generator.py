@@ -5,6 +5,8 @@ from svglib.svglib import svg2rlg
 from reportlab.graphics.barcode import qr
 import io
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.urls import reverse
+from common.utils import site_url
 
 
 class PdfBannerGenerator:
@@ -16,8 +18,8 @@ class PdfBannerGenerator:
     PHONE_NUMBER_W = 100
     FONT_HEIGHT = 50
 
-    def __init__(self, phone_number):
-        self.phone_number = phone_number
+    def __init__(self, banner):
+        self.banner = banner
 
     def generate(self):
         buffer = io.BytesIO()
@@ -36,7 +38,7 @@ class PdfBannerGenerator:
         renderPDF.draw(background_drawing, canvas, 0, 0)
 
     def __draw_qr(self, canvas):
-        qr_widget = qr.QrCodeWidget('phone_number')
+        qr_widget = qr.QrCodeWidget(value=self.banner_queue_entrypoint_url())
         bounds = qr_widget.getBounds()
         qr_widget_width = bounds[2] - bounds[0]
         qr_widget_height = bounds[3] - bounds[1]
@@ -47,4 +49,9 @@ class PdfBannerGenerator:
 
     def __draw_phone_number(self, canvas):
         canvas.setFont("Courier", self.FONT_HEIGHT)
-        canvas.drawString(self.PHONE_NUMBER_W, self.PHONE_NUMBER_H, self.phone_number)
+        canvas.drawString(self.PHONE_NUMBER_W, self.PHONE_NUMBER_H, self.banner.phone_number)
+
+    def banner_queue_entrypoint_url(self):
+        path = reverse("banners:queue_entrypoint",
+                       kwargs={'banner_id': self.banner.id})
+        return site_url(path)
