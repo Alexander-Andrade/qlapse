@@ -6,8 +6,6 @@ from ..services.banner_creator import BannerCreator
 from banners.views import create
 from banners.models import Banner
 import vcr
-from django.test import override_settings
-import tempfile
 from django.test.client import RequestFactory
 from django.urls import reverse
 
@@ -28,7 +26,6 @@ class BannerCreatorTest(TestCase):
 
 
 class CreateViewTest(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
         self.banner = BannerFactory()
 

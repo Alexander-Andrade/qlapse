@@ -10,15 +10,12 @@ from banners.tests.factories.queue_items import QueueItemFactory, QueueItemTeleg
 from banners.views import next_queue_item, skip_queue_item
 from unittest.mock import patch
 from django.contrib.auth import get_user_model
-from django.test import override_settings
-import tempfile
 from django.urls import reverse
 
 User = get_user_model()
 
 
 class NextQueueItemTwilio(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
         self.banner = BannerFactory()
 
@@ -32,13 +29,14 @@ class NextQueueItemTwilio(TestCase):
         self.request.user = self.banner.user
 
     @patch('twilio.rest.Client.messages')
-    def test_removes_first_queue_element_if_it_has_processing_status(self, twilio_client_class):
+    def test_moves_to_past_queue_element_if_it_has_processing_status(self, twilio_client_class):
         self.queue_item1.status = QueueItemStatus.PROCESSING
         self.queue_item1.save()
 
         next_queue_item(self.request, self.banner.id)
+        self.queue_item1.refresh_from_db()
 
-        self.assertFalse(QueueItem.objects.filter(id=self.queue_item1.id).exists())
+        self.assertTrue(self.queue_item1.past)
 
     @patch('twilio.rest.Client.messages')
     def test_sms_sent_to_next_item(self, twilio_client_class):
@@ -72,7 +70,6 @@ class NextQueueItemTwilio(TestCase):
 
 
 class NextQueueItemTelegram(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
         self.banner = BannerFactory()
 
@@ -120,7 +117,6 @@ class NextQueueItemTelegram(TestCase):
 
 
 class SkipQueueItem(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
         self.banner = BannerFactory()
 
@@ -136,11 +132,11 @@ class SkipQueueItem(TestCase):
 
         skip_queue_item(self.request, self.banner.id)
 
-        self.assertFalse(
-            self.banner.queue.filter(id=queue_item1.id).exists()
+        self.assertTrue(
+            self.banner.queue.past().filter(id=queue_item1.id).exists()
         )
         self.assertTrue(
-            self.banner.queue.filter(id=queue_item2.id).exists()
+            self.banner.queue.actual().filter(id=queue_item2.id).exists()
         )
 
     @patch('django.contrib.messages.error')
@@ -188,7 +184,6 @@ class SkipQueueItem(TestCase):
 
 
 class Queue(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
         password = 'foo'
         self.user = UserFactory(password=password)
@@ -208,7 +203,6 @@ class Queue(TestCase):
 
 
 class QueueEntrypoint(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
         self.banner = BannerFactory()
         self.queue_item1 = QueueItemFactory(banner=self.banner)

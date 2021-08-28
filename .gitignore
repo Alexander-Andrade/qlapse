@@ -4,6 +4,7 @@ staticfiles/*
 */*/__pycache__/
 */__pycache__/
 __pycache__/
-media/
+media/*
+!media/testfiles/
 .env
 qlapse.pem

@@ -20,12 +20,12 @@ class RegisterInQueueTwilio:
         if not banner:
             return self.error_msg_and_failure('The banner is not found')
 
-        queue_item = banner.queue.\
+        queue_item = banner.queue.actual().\
             filter(phone_number=self.client_phone_number).first()
         if queue_item:
             return self.error_msg_and_failure('You are already in the queue')
 
-        queue_size = banner.queue.count()
+        queue_size = banner.queue.actual().count()
         queue_item = banner.queue.create(phone_number=self.client_phone_number)
 
         sms_result = self.sms(

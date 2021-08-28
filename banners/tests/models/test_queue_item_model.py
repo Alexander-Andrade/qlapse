@@ -1,11 +1,8 @@
 from django.test import TestCase
-import tempfile
-from django.test import override_settings
 from banners.tests.factories.banners import BannerFactory
 from banners.tests.factories.queue_items import QueueItemFactory
 
 
-@override_settings(MEDIA_ROOT=tempfile.gettempdir())
 class QueueItemModel(TestCase):
     def setUp(self):
         self.banner = BannerFactory()

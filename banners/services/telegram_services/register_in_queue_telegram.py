@@ -20,7 +20,7 @@ class RegisterInQueueTelegram:
         if not banner:
             return self.error_msg_and_failure('banner not found')
 
-        queue_size = banner.queue.count()
+        queue_size = banner.queue.actual().count()
         queue_item = banner.queue.create(
             phone_number=self.message.contact.phone_number,
             source=QueueItemSource.TELEGRAM,

@@ -1,6 +1,4 @@
 from django.test import TestCase
-from django.test import override_settings
-import tempfile
 from django.test.client import RequestFactory
 from unittest.mock import patch
 
@@ -10,7 +8,6 @@ from banners.models import QueueItem
 
 
 class TwilioOnBannerCallWebhook(TestCase):
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def setUp(self):
         self.request_factory = RequestFactory()
         self.banner_number = '+16175551212'
@@ -20,7 +17,6 @@ class TwilioOnBannerCallWebhook(TestCase):
         self.request = self.request_factory.post('/banners/twilio_on_banner_call_webhook', self.request_data)
         self.banner = BannerFactory(phone_number=self.banner_number)
 
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     @patch('twilio.rest.Client.messages')
     def test_twilml_response(self, twilio_client_class):
         response = twilio_on_banner_call_webhook(self.request)
@@ -28,7 +24,6 @@ class TwilioOnBannerCallWebhook(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "You are added to the queue")
 
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     @patch('twilio.rest.Client.messages')
     def test_queue_item_created(self, twilio_client_class):
         twilio_on_banner_call_webhook(self.request)
@@ -36,7 +31,6 @@ class TwilioOnBannerCallWebhook(TestCase):
         self.assertTrue(queue_item.exists())
         self.assertEqual(queue_item[0].banner, self.banner)
 
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
     @patch('twilio.rest.Client.messages')
     def test_sms(self, twilio_client_class):
         twilio_on_banner_call_webhook(self.request)
