@@ -1,9 +1,11 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from ..services.next_queue_item import NextQueueItem
-from ..services.skip_item import SkipItem
+from banners.services.queue_item_services.next_queue_item import NextQueueItem
+from banners.services.queue_item_services.skip_item import SkipItem
 from django.contrib.auth.decorators import login_required
 from ..models import Banner
 from django.contrib import messages
+
+from ..services.queue_item_services.estimate_waiting_time import EstimateWaitingTime
 
 
 @login_required
@@ -38,6 +40,7 @@ def skip_queue_item(request, banner_id):
 
 def queue_entrypoint(request, banner_id):
     banner = get_object_or_404(Banner, pk=banner_id)
-    context = {'banner': banner}
+    time_estimation = EstimateWaitingTime(banner=banner).call()
+    context = {'banner': banner, 'time_estimation': time_estimation}
 
     return render(request, 'banners/queue_entrypoint.html', context)

@@ -6,13 +6,10 @@ from banners.models import BannerTelegram
 from django.test.client import RequestFactory
 
 from banners.tests.factories.banners import BannerFactory
-from banners.tests.factories.queue_items import QueueItemFactory, QueueItemTelegramFactory
+from banners.tests.factories.queue_items import QueueItemFactory, QueueItemTelegramFactory, QueueItemProcessingFactory
 from banners.views import next_queue_item, skip_queue_item
 from unittest.mock import patch
-from django.contrib.auth import get_user_model
 from django.urls import reverse
-
-User = get_user_model()
 
 
 class NextQueueItemTwilio(TestCase):
@@ -30,7 +27,7 @@ class NextQueueItemTwilio(TestCase):
 
     @patch('twilio.rest.Client.messages')
     def test_moves_to_past_queue_element_if_it_has_processing_status(self, twilio_client_class):
-        self.queue_item1.status = QueueItemStatus.PROCESSING
+        self.queue_item1 = QueueItemProcessingFactory(banner=self.banner)
         self.queue_item1.save()
 
         next_queue_item(self.request, self.banner.id)

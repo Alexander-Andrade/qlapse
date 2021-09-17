@@ -25,6 +25,9 @@ class QueueItemQuerySet(models.QuerySet):
     def past(self):
         return self.filter(past=True)
 
+    def processed(self):
+        return self.filter(status=QueueItemStatus.PROCESSED)
+
 
 class QueueItem(models.Model):
     objects = QueueItemQuerySet().as_manager()
@@ -38,13 +41,15 @@ class QueueItem(models.Model):
                             default=QueueItemStatus.QUEUED)
     source = enum.EnumField(QueueItemSource,
                             default=QueueItemSource.TWILIO)
-    telegram_chat_id = models.BigIntegerField(null=True,
-                                              validators=[MinValueValidator(0)])
+    telegram_chat_id = models.BigIntegerField(
+        null=True, blank=True, validators=[MinValueValidator(0)]
+    )
     past = models.BooleanField(null=False, default=False)
     position = PositionField(collection=('banner', 'past'))
 
-    processing_started_at = models.DateTimeField(null=True)
-    processing_ended_at = models.DateTimeField(null=True)
+    processing_started_at = models.DateTimeField(null=True, blank=True)
+    processing_ended_at = models.DateTimeField(null=True, blank=True)
+    waiting_time_estimation = models.DurationField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

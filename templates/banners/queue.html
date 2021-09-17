@@ -46,7 +46,7 @@
                 {{ queue_item.get_status_display|lower }}
               </td>
               <td>
-                {{ queue_item.created_at|time_passed_since }}
+                {{ queue_item.created_at|time_passed_since_formatter }}
               </td>
             </tr>
           {% endfor %}

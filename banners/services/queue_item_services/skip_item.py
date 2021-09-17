@@ -1,5 +1,5 @@
-from banners.models import QueueItemStatus
-from banners.services.skip_queue_item_processor import SkipQueueItemProcessor
+from banners.services.queue_item_services.transit_to_skipped_state import TransitToSkippedState
+from banners.services.queue_item_services.skip_queue_item_processor import SkipQueueItemProcessor
 from shared.services.result import Success, Failure
 
 
@@ -18,8 +18,6 @@ class SkipItem:
             return Failure('The queue is empty')
 
         SkipQueueItemProcessor(item).call()
-        item.past = True
-        item.status = QueueItemStatus.SKIPPED
-        item.save()
+        TransitToSkippedState(item).call()
 
         return Success()

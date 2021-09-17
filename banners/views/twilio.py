@@ -1,7 +1,7 @@
 from twilio.twiml.voice_response import VoiceResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from banners.services.twilio_services.register_in_queue_twilio import RegisterInQueueTwilio
+from banners.services.queue_item_services.twilio_services.register_in_queue_twilio import RegisterInQueueTwilio
 
 
 @csrf_exempt

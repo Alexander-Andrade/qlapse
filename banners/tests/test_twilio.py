@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
 from unittest.mock import patch
+from datetime import timedelta
 
 from banners.tests.factories.banners import BannerFactory
+from banners.tests.factories.queue_items import QueueItemFactory, QueueItemProcessedFactory
 from banners.views import twilio_on_banner_call_webhook
 from banners.models import QueueItem
 
@@ -12,9 +14,16 @@ class TwilioOnBannerCallWebhook(TestCase):
         self.request_factory = RequestFactory()
         self.banner_number = '+16175551212'
         self.client_number = '+16173251789'
-        self.request_data = { 'CallSid': 'callsid', 'AccountSid': 'ACXXXX', 'From': self.client_number,
-                                              'To': self.banner_number, 'CallStatus': 'ringing' }
-        self.request = self.request_factory.post('/banners/twilio_on_banner_call_webhook', self.request_data)
+        self.request_data = {
+            'CallSid': 'callsid',
+            'AccountSid': 'ACXXXX',
+            'From': self.client_number,
+            'To': self.banner_number,
+            'CallStatus': 'ringing'
+        }
+        self.request = self.request_factory.post(
+            '/banners/twilio_on_banner_call_webhook', self.request_data
+        )
         self.banner = BannerFactory(phone_number=self.banner_number)
 
     @patch('twilio.rest.Client.messages')
@@ -33,12 +42,23 @@ class TwilioOnBannerCallWebhook(TestCase):
 
     @patch('twilio.rest.Client.messages')
     def test_sms(self, twilio_client_class):
+        QueueItemProcessedFactory(banner=self.banner,
+                                  waiting_time_estimation=timedelta(minutes=5))
+        QueueItemFactory(banner=self.banner)
+
         twilio_on_banner_call_webhook(self.request)
 
         self.assertTrue(twilio_client_class.create.called)
-        self.assertEqual(twilio_client_class.create.call_args[1]['from_'], self.banner_number)
-        self.assertEqual(twilio_client_class.create.call_args[1]['to'], self.client_number)
+        self.assertEqual(
+            twilio_client_class.create.call_args[1]['from_'],
+            self.banner_number
+        )
+        self.assertEqual(
+            twilio_client_class.create.call_args[1]['to'],
+            self.client_number
+        )
         self.assertEqual(
             twilio_client_class.create.call_args[1]['body'],
-            'You are in the queue. There are 0 in front of you.'
+            'You are in the queue. There are 1 in front of you.'
+            ' Waiting time estimation: 5m'
         )

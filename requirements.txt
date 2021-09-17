@@ -30,3 +30,4 @@ pyTelegramBotAPI==3.7.6
 django-enumfield==2.0.2
 python-magic==0.4.22
 flake8==3.8.4
+time-machine==2.4.0

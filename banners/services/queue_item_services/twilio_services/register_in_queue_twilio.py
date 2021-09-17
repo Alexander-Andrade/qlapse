@@ -1,5 +1,8 @@
 from banners.models import Banner
 from django.conf import settings
+
+from banners.services.queue_item_services.estimate_waiting_time import EstimateWaitingTime
+from banners.templatetags.queue_filters import waiting_time_formatter
 from shared.services.result import Success, Failure
 from twilio.rest import Client
 import twilio
@@ -27,9 +30,12 @@ class RegisterInQueueTwilio:
 
         queue_size = banner.queue.actual().count()
         queue_item = banner.queue.create(phone_number=self.client_phone_number)
-
+        time_estimation = EstimateWaitingTime(
+            banner=banner, queue_item=queue_item
+        ).call()
         sms_result = self.sms(
-            body=f"You are in the queue. There are {queue_size} in front of you."
+            body=f"You are in the queue. There are {queue_size} in front of you. "
+                 f"Waiting time estimation: {waiting_time_formatter(time_estimation)}"
         )
         if sms_result.failed:
             return sms_result
