@@ -1,6 +1,9 @@
+from django.utils import timezone
+from datetime import timedelta
+
 import factory
 from faker import Factory
-from banners.models import QueueItem, QueueItemSource
+from banners.models import QueueItem, QueueItemSource, QueueItemStatus
 from accounts.tests.factories.fake_number_provider import CustomPhoneProvider
 from banners.tests.factories.banner_telegrams import BannerTelegramFactory
 from banners.tests.factories.banners import BannerFactory
@@ -10,6 +13,7 @@ faker = Factory.create()
 faker.add_provider(CustomPhoneProvider)
 fake = Faker()
 
+
 class QueueItemFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = QueueItem
@@ -18,12 +22,22 @@ class QueueItemFactory(factory.django.DjangoModelFactory):
     phone_number = factory.LazyAttribute(lambda _: faker.phone_number())
 
 
-class QueueItemTelegramFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = QueueItem
+class QueueItemProcessingFactory(QueueItemFactory):
+    status = QueueItemStatus.PROCESSING
+    processing_started_at = factory.\
+        LazyAttribute(lambda _: timezone.now() - timedelta(minutes=10))
 
-    banner = factory.SubFactory(BannerFactory)
-    phone_number = factory.LazyAttribute(lambda _: faker.phone_number())
+
+class QueueItemProcessedFactory(QueueItemFactory):
+    status = QueueItemStatus.PROCESSED
+    past = True
+    processing_started_at = factory.\
+        LazyAttribute(lambda _: timezone.now() - timedelta(minutes=10))
+    processing_ended_at = factory.\
+        LazyAttribute(lambda queue_item: queue_item.processing_started_at + timedelta(minutes=5))
+
+
+class QueueItemTelegramFactory(QueueItemFactory):
     source = QueueItemSource.TELEGRAM
     telegram_chat_id = factory.LazyAttribute(lambda _: fake.unique.random_int())
 

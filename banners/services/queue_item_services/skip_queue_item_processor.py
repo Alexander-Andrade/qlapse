@@ -1,5 +1,5 @@
 from banners.models import QueueItemSource
-from ..services import telegram_services, twilio_services
+from banners.services.queue_item_services import telegram_services, twilio_services
 
 
 class SkipQueueItemProcessor:

@@ -1,4 +1,5 @@
-from banners.services.skip_queue_item_processor import SkipQueueItemProcessor
+from banners.services.queue_item_services.transit_to_skipped_state import TransitToSkippedState
+from banners.services.queue_item_services.skip_queue_item_processor import SkipQueueItemProcessor
 from shared.services.result import Success, Failure
 
 
@@ -11,12 +12,12 @@ class SkipItem:
         if not self.banner:
             return Failure('banner is not found')
 
-        item = self.banner.queue.first()
+        item = self.banner.queue.actual().first()
 
         if not item:
             return Failure('The queue is empty')
 
         SkipQueueItemProcessor(item).call()
-        item.delete()
+        TransitToSkippedState(item).call()
 
         return Success()

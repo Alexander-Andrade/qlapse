@@ -22,15 +22,15 @@ class CalcPeopleAhead:
                 'banner not found'
             )
 
-        queue_item = banner.queue.\
+        queue_item = banner.queue.actual().\
             filter(telegram_chat_id=self.message.chat.id).first()
         if not queue_item:
             return self.error_msg_and_failure(
                 'queue item not found'
             )
 
-        people_ahead = banner.queue.filter(position__lt=queue_item.position).\
-            count()
+        people_ahead = banner.queue.actual().\
+            filter(position__lt=queue_item.position).count()
         queue_msg = f"There are {people_ahead} in front of you."
 
         markup = types.ReplyKeyboardMarkup(row_width=1)

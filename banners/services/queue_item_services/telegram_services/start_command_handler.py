@@ -26,7 +26,7 @@ class StartCommandHandler:
         send_mobile_number_btn = types.KeyboardButton('share contact & get in line',
                                                       request_contact=True)
         markup.add(send_mobile_number_btn)
-        queue_msg = f"There are {banner.queue.count()} in front of you."
+        queue_msg = f"There are {banner.queue.actual().count()} in front of you."
         self.bot.send_message(self.message.chat.id, queue_msg,
                          reply_markup=markup)
 

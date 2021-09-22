@@ -1,4 +1,6 @@
 from banners.models import Banner, QueueItemSource, BannerTelegram
+from banners.services.queue_item_services.estimate_waiting_time import EstimateWaitingTime
+from banners.templatetags.queue_filters import waiting_time_formatter
 from shared.services.result import Success, Failure
 from telebot import types
 
@@ -20,14 +22,18 @@ class RegisterInQueueTelegram:
         if not banner:
             return self.error_msg_and_failure('banner not found')
 
-        queue_size = banner.queue.count()
+        queue_size = banner.queue.actual().count()
         queue_item = banner.queue.create(
             phone_number=self.message.contact.phone_number,
             source=QueueItemSource.TELEGRAM,
             telegram_chat_id=self.message.chat.id
         )
 
-        queue_msg = f"You are in Queue. There are {queue_size} in front of you."
+        time_estimation = EstimateWaitingTime(
+            banner=banner, queue_item=queue_item
+        ).call()
+        queue_msg = f"You are in Queue. There are {queue_size} in front of you." \
+                    f"Waiting time estimation: {waiting_time_formatter(time_estimation)}"
 
         markup = types.ReplyKeyboardMarkup(row_width=1)
         queue_length_btn = types.KeyboardButton('/check queue length')
