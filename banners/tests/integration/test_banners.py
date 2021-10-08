@@ -3,7 +3,7 @@ from django.test.client import RequestFactory
 from django.urls import reverse
 from django.test import TestCase, Client
 
-from .factories.banners import BannerFactory
+from banners.tests.factories.banners import BannerFactory
 from banners.views import create
 
 

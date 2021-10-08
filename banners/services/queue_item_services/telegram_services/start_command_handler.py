@@ -1,4 +1,6 @@
 from banners.models import Banner, BannerTelegram
+from banners.services.queue_item_services.estimate_waiting_time import EstimateWaitingTime
+from banners.templatetags.queue_filters import waiting_time_formatter
 from shared.services.result import Success, Failure
 from telebot import types
 
@@ -26,9 +28,12 @@ class StartCommandHandler:
         send_mobile_number_btn = types.KeyboardButton('share contact & get in line',
                                                       request_contact=True)
         markup.add(send_mobile_number_btn)
-        queue_msg = f"There are {banner.queue.actual().count()} in front of you."
+        time_estimation = EstimateWaitingTime(banner=banner).call()
+        queue_msg = f"There are {banner.queue.actual().count()} in front of you. " \
+                    f"Waiting time estimation: " \
+                    f"{waiting_time_formatter(time_estimation)}"
         self.bot.send_message(self.message.chat.id, queue_msg,
-                         reply_markup=markup)
+                              reply_markup=markup)
 
         return Success()
 
