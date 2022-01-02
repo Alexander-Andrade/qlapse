@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from banners.services.queue_item_services.next_queue_item import NextQueueItem
-from banners.services.queue_item_services.skip_item import SkipItem
+from banners.services.queue_item_services.actions.next_queue_item import NextQueueItem
+from banners.services.queue_item_services.actions.skip_item import SkipItem
 from django.contrib.auth.decorators import login_required
 from ..models import Banner
 from django.contrib import messages
 
-from ..services.queue_item_services.estimate_waiting_time import EstimateWaitingTime
+from banners.services.queue_item_services.waiting_time.estimate_waiting_time import EstimateWaitingTime
 
 
 @login_required

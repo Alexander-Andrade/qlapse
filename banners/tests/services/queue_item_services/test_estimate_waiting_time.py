@@ -1,7 +1,7 @@
 from django.test import TestCase
 from datetime import timedelta
 
-from banners.services.queue_item_services.estimate_waiting_time import EstimateWaitingTime
+from banners.services.queue_item_services.waiting_time.estimate_waiting_time import EstimateWaitingTime
 from banners.tests.factories.banners import BannerFactory
 from banners.tests.factories.queue_items import QueueItemFactory, QueueItemProcessedFactory
 

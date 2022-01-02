@@ -1,8 +1,8 @@
 from django.utils import timezone
 
 from banners.models import QueueItemStatus
-from banners.services.queue_item_services.convolve_waiting_time import ConvolveWaitingTime
-from banners.services.queue_item_services.queue_item_validator import QueueItemValidator
+from banners.services.queue_item_services.waiting_time.convolve_waiting_time import ConvolveWaitingTime
+from banners.services.queue_item_services.validators.queue_item_validator import QueueItemValidator
 from shared.services.result import Success, Failure
 
 

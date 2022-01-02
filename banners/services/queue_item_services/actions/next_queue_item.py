@@ -1,7 +1,7 @@
 from shared.services.result import Success, Failure
-from banners.services.queue_item_services.next_queue_item_processor import NextQueueItemProcessor
-from banners.services.queue_item_services.transit_to_processing_state import TransitToProcessingState
-from banners.services.queue_item_services.transit_to_processed_state import TransitToProcessedState
+from banners.services.queue_item_services.action_processors.next_queue_item_processor import NextQueueItemProcessor
+from banners.services.queue_item_services.state_transitions.transit_to_processing_state import TransitToProcessingState
+from banners.services.queue_item_services.state_transitions.transit_to_processed_state import TransitToProcessedState
 from banners.models import QueueItemStatus
 
 

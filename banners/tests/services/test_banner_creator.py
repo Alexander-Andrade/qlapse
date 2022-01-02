@@ -16,7 +16,7 @@ class BannerCreatorTest(TestCase):
         self.assertIsInstance(creation_result.result, Banner)
 
     def test_create_with_fake_number(self):
-        creation_result = BannerCreator(user=self.user, fake_banner_number=True).\
-            create()
-        self.assertIsInstance(creation_result.result, Banner)
+        with self.settings(FAKE_BANNER_PHONE_NUMBERS=True):
+            creation_result = BannerCreator(user=self.user).create()
+            self.assertIsInstance(creation_result.result, Banner)
 

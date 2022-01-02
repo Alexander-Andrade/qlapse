@@ -1,7 +1,9 @@
+from functools import cached_property
+
 from banners.models import Banner
 from django.conf import settings
 
-from banners.services.queue_item_services.estimate_waiting_time import EstimateWaitingTime
+from banners.services.queue_item_services.waiting_time.estimate_waiting_time import EstimateWaitingTime
 from banners.templatetags.queue_filters import waiting_time_formatter
 from shared.services.result import Success, Failure
 from twilio.rest import Client
@@ -17,30 +19,45 @@ class RegisterInQueueTwilio:
                              settings.TWILIO_ACCOUNT_TOKEN)
 
     def register(self):
-        banner = Banner.objects.\
-            filter(phone_number=self.banner_phone_number).first()
-
-        if not banner:
+        if not self.banner:
             return self.error_msg_and_failure('The banner is not found')
 
-        queue_item = banner.queue.actual().\
-            filter(phone_number=self.client_phone_number).first()
-        if queue_item:
+        if self.find_queue_item():
             return self.error_msg_and_failure('You are already in the queue')
 
-        queue_size = banner.queue.actual().count()
-        queue_item = banner.queue.create(phone_number=self.client_phone_number)
-        time_estimation = EstimateWaitingTime(
-            banner=banner, queue_item=queue_item
-        ).call()
+        self.queue_item
+
         sms_result = self.sms(
-            body=f"You are in the queue. There are {queue_size} in front of you. "
-                 f"Waiting time estimation: {waiting_time_formatter(time_estimation)}"
+            body=f"You are in the queue. There are {self.queue_size - 1} in front of you. "
+                 f"Waiting time estimation: {self.formatted_time_estimation}"
         )
         if sms_result.failed:
             return sms_result
 
-        return Success(queue_item)
+        return Success(self.queue_item)
+
+    @cached_property
+    def formatted_time_estimation(self):
+        return waiting_time_formatter(self.time_estimation)
+
+    @cached_property
+    def time_estimation(self):
+        return EstimateWaitingTime(banner=self.banner, queue_item=self.queue_item).call()
+
+    @cached_property
+    def queue_item(self):
+        return self.banner.queue.create(phone_number=self.client_phone_number)
+
+    @cached_property
+    def queue_size(self):
+        return self.banner.queue.actual().count()
+
+    def find_queue_item(self):
+        return self.banner.queue.actual().filter(phone_number=self.client_phone_number).first()
+
+    @cached_property
+    def banner(self):
+        return Banner.objects.filter(phone_number=self.banner_phone_number).first()
 
     def sms(self, body):
         try:

@@ -23,9 +23,7 @@ class BannersListView(ListView):
 @login_required
 def create(request):
     if request.method == 'POST':
-        creation_result = BannerCreator(
-            user=request.user,
-            fake_banner_number=settings.FAKE_BANNER_PHONE_NUMBERS).create()
+        creation_result = BannerCreator(user=request.user).create()
 
         if creation_result.failed:
             messages.error(request, creation_result.error)

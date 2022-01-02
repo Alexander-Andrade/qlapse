@@ -1,5 +1,5 @@
 from banners.models import QueueItemStatus
-from banners.services.queue_item_services.queue_item_validator import QueueItemValidator
+from banners.services.queue_item_services.validators.queue_item_validator import QueueItemValidator
 from shared.services.result import Failure, Success
 
 

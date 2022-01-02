@@ -1,5 +1,5 @@
-from banners.services.queue_item_services.transit_to_skipped_state import TransitToSkippedState
-from banners.services.queue_item_services.skip_queue_item_processor import SkipQueueItemProcessor
+from banners.services.queue_item_services.state_transitions.transit_to_skipped_state import TransitToSkippedState
+from banners.services.queue_item_services.action_processors.skip_queue_item_processor import SkipQueueItemProcessor
 from shared.services.result import Success, Failure
 
 
